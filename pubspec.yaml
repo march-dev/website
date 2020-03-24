@@ -1,0 +1,36 @@
+name: website
+version: 1.0.0
+description: march.dev web site.
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  google_fonts: ^0.3.10
+  cupertino_icons: ^0.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  pedantic: ^1.8.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - google_fonts/JosefinSans-SemiBoldItalic.ttf
+    - google_fonts/JosefinSans-Thin.ttf
+    - google_fonts/JosefinSans-ThinItalic.ttf
+    - google_fonts/JosefinSans-Bold.ttf
+    - google_fonts/JosefinSans-BoldItalic.ttf
+    - google_fonts/JosefinSans-ExtraLight.ttf
+    - google_fonts/JosefinSans-ExtraLightItalic.ttf
+    - google_fonts/JosefinSans-Italic.ttf
+    - google_fonts/JosefinSans-Light.ttf
+    - google_fonts/JosefinSans-LightItalic.ttf
+    - google_fonts/JosefinSans-Medium.ttf
+    - google_fonts/JosefinSans-MediumItalic.ttf
+    - google_fonts/JosefinSans-Regular.ttf
+    - google_fonts/JosefinSans-SemiBold.ttf
