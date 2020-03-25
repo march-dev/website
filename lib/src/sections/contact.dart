@@ -49,17 +49,16 @@ class _ContactSectionState extends State<ContactSection> {
 
   @override
   Widget build(BuildContext context) => SliverSection(
-        title: SliverSection.titleWith(text: 'BE IN'),
-        child: Column(
+        titleBuilder: (context, isMobile) => SliverSection.titleWith(
+          text: 'BE IN',
+          isMobile: isMobile,
+        ),
+        builder: (context, isMobile) => Column(
           children: <Widget>[
-            Text(
-              'TOUCH',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 48,
-                color: kAccentColor,
-                fontWeight: FontWeight.bold,
-              ),
+            SliverSection.titleWith(
+              text: 'TOUCH',
+              isMobile: isMobile,
+              color: kAccentColor,
             ),
             const SizedBox(height: 48),
             Form(
@@ -122,7 +121,7 @@ class _ContactSectionState extends State<ContactSection> {
                             ),
                             child: Text(
                               'SEND',
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(fontSize: kBody1),
                             ),
                           ),
                         ),

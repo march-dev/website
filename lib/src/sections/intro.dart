@@ -11,7 +11,7 @@ import '../helpers/firebase.settings.dart';
 class IntroSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverSection(
-        title: Column(
+        titleBuilder: (context, isMobile) => Column(
           children: <Widget>[
             Image.network(
               getImageAsset('logo.png'),
@@ -19,58 +19,55 @@ class IntroSection extends StatelessWidget {
               height: 128,
             ),
             const SizedBox(height: 32),
-            Text(
-              'MARCH.DEV',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 48,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            SliverSection.titleWith(text: 'MARCH.DEV', isMobile: isMobile),
           ],
         ),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 100),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 32),
-              Text(
+        builder: (context, isMobile) => Column(
+          children: <Widget>[
+            const SizedBox(height: 32),
+            Container(
+              constraints: BoxConstraints(
+                minWidth: 100,
+                maxWidth: 350,
+              ),
+              child: Text(
                 'We are Reserch and Development Team. '
-                'We are\ncommited to ease life and '
+                'We are commited to ease life and '
                 'coding experience',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: kBody1,
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                'for everyone.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: kAccentColor,
-                ),
-              ),
-              const SizedBox(height: 48),
-              RaisedButton(
-                onPressed: () {},
-                textColor: Colors.white,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'for everyone.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: kBody2,
+                fontWeight: FontWeight.bold,
                 color: kAccentColor,
-                padding: const EdgeInsets.fromLTRB(48, 18, 48, 18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(48)),
-                ),
-                child: Text(
-                  'LEARN MORE',
-                  style: TextStyle(fontSize: 16),
-                ),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 48),
+            RaisedButton(
+              onPressed: () {
+                // TODO
+              },
+              textColor: Colors.white,
+              color: kAccentColor,
+              padding: const EdgeInsets.fromLTRB(48, 18, 48, 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(48)),
+              ),
+              child: Text(
+                'LEARN MORE',
+                style: TextStyle(fontSize: kBody1),
+              ),
+            ),
+          ],
         ),
       );
 }

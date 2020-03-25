@@ -4,72 +4,93 @@
 
 import 'package:flutter/material.dart';
 
-class Section extends StatefulWidget {
+import 'package:responsive_layout_builder/responsive_layout_builder.dart';
+
+const double kTitleLarge = 48;
+const double kTitleSmall = 36;
+double getTitleSize(bool isMobile) => isMobile ? kTitleSmall : kTitleLarge;
+
+const double kBody1 = 16;
+const double kBody2 = 18;
+
+typedef Widget ResponsiveWidgetBuilder(BuildContext context, bool isMobile);
+
+class Section extends StatelessWidget {
   const Section({
     Key key,
-    @required this.title,
-    @required this.child,
+    @required this.titleBuilder,
+    @required this.builder,
     this.backgroundColor,
   }) : super(key: key);
 
-  final Widget title;
-  final Widget child;
+  final ResponsiveWidgetBuilder titleBuilder;
+  final ResponsiveWidgetBuilder builder;
   final Color backgroundColor;
 
-  static Widget titleWith({@required String text, Color color}) => Text(
+  static Widget titleWith({
+    @required String text,
+    @required bool isMobile,
+    Color color,
+  }) =>
+      Text(
         text,
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 48,
+          fontSize: getTitleSize(isMobile),
           color: color ?? Colors.white,
           fontWeight: FontWeight.bold,
         ),
       );
 
   @override
-  _SectionState createState() => _SectionState();
-}
+  Widget build(BuildContext context) => ResponsiveLayoutBuilder(
+        portraitSizes: ScreenSizeSettings.portrait(),
+        landscapeSizes: ScreenSizeSettings.portrait(),
+        builder: (context, screen) {
+          final isMobile = screen.size == LayoutSize.mobile;
 
-class _SectionState extends State<Section> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: widget.backgroundColor,
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Center(child: widget.title),
-            const SizedBox(height: 16),
-            widget.child,
-          ],
-        ),
-      ),
-    );
-  }
+          return Container(
+            color: backgroundColor,
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Center(child: titleBuilder(context, isMobile)),
+                  const SizedBox(height: 16),
+                  builder(context, isMobile),
+                ],
+              ),
+            ),
+          );
+        },
+      );
 }
 
 class SliverSection extends StatelessWidget {
   const SliverSection({
     Key key,
-    @required this.title,
-    @required this.child,
+    @required this.titleBuilder,
+    @required this.builder,
     this.backgroundColor,
   }) : super(key: key);
 
-  final Widget title;
-  final Widget child;
+  final ResponsiveWidgetBuilder titleBuilder;
+  final ResponsiveWidgetBuilder builder;
   final Color backgroundColor;
 
-  static Widget titleWith({@required String text, Color color}) =>
-      Section.titleWith(text: text, color: color);
+  static Widget titleWith({
+    @required String text,
+    @required bool isMobile,
+    Color color,
+  }) =>
+      Section.titleWith(text: text, isMobile: isMobile, color: color);
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
         child: Section(
-          title: title,
-          child: child,
+          titleBuilder: (context, isMobile) => titleBuilder(context, isMobile),
+          builder: (context, isMobile) => builder(context, isMobile),
           backgroundColor: backgroundColor,
         ),
       );

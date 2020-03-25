@@ -8,85 +8,117 @@ import '../scaffold.dart';
 import '../widgets/section.dart';
 
 class AboutSection extends StatelessWidget {
+  static const double kMaxWidth = 300;
+
+  Widget _buildBulletListItem({
+    @required String text,
+    bool showBullet = true,
+    TextStyle style,
+  }) =>
+      Container(
+        constraints: BoxConstraints(
+          minWidth: 100,
+          maxWidth: kMaxWidth,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              '${showBullet == true ? '•' : ' '} ',
+              textAlign: TextAlign.justify,
+              style: style ??
+                  TextStyle(
+                    fontSize: kBody1,
+                    color: Colors.black,
+                  ),
+            ),
+            Expanded(
+              child: Text(
+                text,
+                textAlign: TextAlign.justify,
+                style: style ??
+                    TextStyle(
+                      fontSize: kBody1,
+                      color: Colors.black,
+                    ),
+              ),
+            ),
+          ],
+        ),
+      );
+
   @override
   Widget build(BuildContext context) => SliverSection(
         backgroundColor: Colors.white,
-        title: SliverSection.titleWith(text: 'ABOUT', color: Colors.black),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 100),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 16),
-              Text(
-                'WHAT WE DO',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: kAccentColor,
+        titleBuilder: (context, isMobile) => SliverSection.titleWith(
+          text: 'ABOUT',
+          isMobile: isMobile,
+          color: Colors.black,
+        ),
+        builder: (context, isMobile) => Column(
+          children: <Widget>[
+            const SizedBox(height: 16),
+            Text(
+              'WHAT WE DO',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: kBody2,
+                fontWeight: FontWeight.bold,
+                color: kAccentColor,
+              ),
+            ),
+            const SizedBox(height: 32),
+            Wrap(
+              spacing: 48,
+              runSpacing: 48,
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    FlutterLogo(size: kMaxWidth),
+                    const SizedBox(height: 8),
+                    _buildBulletListItem(
+                      text: 'We create plugins for Dart and Flutter '
+                          'to let YOU be more EFFICIENT.',
+                    ),
+                    const SizedBox(height: 8),
+                    _buildBulletListItem(
+                      text: 'Write less, do more!',
+                      showBullet: false,
+                      style: TextStyle(
+                        fontSize: kBody2,
+                        color: kAccentColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 32),
-              Wrap(
-                spacing: 48,
-                runSpacing: 48,
-                children: <Widget>[
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      FlutterLogo(size: 300),
-                      const SizedBox(height: 8),
-                      Text(
-                        '• We create cross-platform applications\n  that conform to any user\'s needs.',
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildBulletListItem(
+                      text: 'We create cross-platform applications '
+                          'that conform to any user\'s needs.',
+                    ),
+                    const SizedBox(height: 8),
+                    _buildBulletListItem(
+                      text: 'Done with passion for YOU!',
+                      showBullet: false,
+                      style: TextStyle(
+                        fontSize: kBody2,
+                        color: kAccentColor,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '  Done with passion for YOU!',
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: kAccentColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        '• We create plugins for Dart and Flutter\n  to let YOU be more EFFICIENT.',
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '  Write less, do more!',
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: kAccentColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      FlutterLogo(size: 300),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
+                    ),
+                    const SizedBox(height: 8),
+                    FlutterLogo(size: kMaxWidth),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
       );
 }

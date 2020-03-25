@@ -4,6 +4,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:responsive_layout_builder/responsive_layout_builder.dart';
+
 import 'sections/apps.dart';
 import 'sections/intro.dart';
 import 'sections/about.dart';
@@ -22,32 +24,34 @@ class WebSiteScaffold extends StatefulWidget {
 class _WebSiteScaffoldState extends State<WebSiteScaffold> {
   final _controller = ScrollController();
 
-  Widget _buildAppBar() => SliverAppBar(
+  Widget _buildAppBar(bool isMobile) => SliverAppBar(
         elevation: 0,
         pinned: false,
         backgroundColor: Colors.transparent,
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () {},
-            textColor: Colors.white,
-            child: Text('ABOUT'),
-          ),
-          FlatButton(
-            onPressed: () {},
-            textColor: Colors.white,
-            child: Text('APPS'),
-          ),
-          FlatButton(
-            onPressed: () {},
-            textColor: Colors.white,
-            child: Text('PLUGINS'),
-          ),
-          FlatButton(
-            onPressed: () {},
-            textColor: Colors.white,
-            child: Text('CONTACT'),
-          ),
-        ],
+        actions: isMobile
+            ? <Widget>[]
+            : <Widget>[
+                FlatButton(
+                  onPressed: () {},
+                  textColor: Colors.white,
+                  child: Text('ABOUT'),
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  textColor: Colors.white,
+                  child: Text('APPS'),
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  textColor: Colors.white,
+                  child: Text('PLUGINS'),
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  textColor: Colors.white,
+                  child: Text('CONTACT'),
+                ),
+              ],
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -83,7 +87,7 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
         ),
       );
 
-  Widget _buildBottomBar() => SliverToBoxAdapter(
+  Widget _buildBottomBar(bool isMobile) => SliverToBoxAdapter(
         child: Ink(
           color: Colors.black,
           child: Padding(
@@ -115,22 +119,23 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
                       ),
                     ],
                   ),
-                  // TODO hide on mobile
-                  const Text(
-                    '|',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  if (!isMobile)
+                    const Text(
+                      '|',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   FlatButton(
                     onPressed: () {},
                     textColor: Colors.white,
                     hoverColor: kAccentColor.withOpacity(0.5),
-                    child: const Text('Email Us: eo.march.dev+support@gmail.com'),
+                    child:
+                        const Text('Email Us: eo.march.dev+support@gmail.com'),
                   ),
-                  // TODO hide on mobile
-                  const Text(
-                    '|',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  if (!isMobile)
+                    const Text(
+                      '|',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   const Text(
                     '© 2020 by MARCH.DEV',
                     style: TextStyle(color: Colors.white),
@@ -143,21 +148,27 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
       );
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        // controller: _controller,
-        physics: const BouncingScrollPhysics(),
-        slivers: <Widget>[
-          _buildAppBar(),
-          IntroSection(),
-          AboutSection(),
-          AppsSection(),
-          PluginsSection(),
-          ContactSection(),
-          _buildBottomBar(),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ResponsiveLayoutBuilder(
+        portraitSizes: ScreenSizeSettings.portrait(),
+        landscapeSizes: ScreenSizeSettings.portrait(),
+        builder: (context, screen) {
+          final bool isMobile = screen.size == LayoutSize.mobile;
+
+          return Scaffold(
+            body: CustomScrollView(
+              controller: _controller,
+              physics: const BouncingScrollPhysics(),
+              slivers: <Widget>[
+                _buildAppBar(isMobile),
+                IntroSection(),
+                AboutSection(),
+                AppsSection(),
+                PluginsSection(),
+                ContactSection(),
+                _buildBottomBar(isMobile),
+              ],
+            ),
+          );
+        },
+      );
 }

@@ -11,9 +11,9 @@ class AppsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverSection(
         backgroundColor: Colors.white,
-        title:
-            SliverSection.titleWith(text: 'APPLICATIONS', color: Colors.black),
-        child: Column(
+        titleBuilder: (context, isMobile) => SliverSection.titleWith(
+            text: 'APPLICATIONS', isMobile: isMobile, color: Colors.black),
+        builder: (context, isMobile) => Column(
           children: <Widget>[
             Wrap(
               spacing: 48,
