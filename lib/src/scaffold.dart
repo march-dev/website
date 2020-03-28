@@ -21,7 +21,15 @@ class WebSiteScaffold extends StatefulWidget {
 }
 
 class _WebSiteScaffoldState extends State<WebSiteScaffold> {
-  final _controller = ScrollController();
+  final _contactKey = GlobalKey();
+  final _pluginKey = GlobalKey();
+  final _aboutKey = GlobalKey();
+  final _appsKey = GlobalKey();
+
+  void _scrollTo(GlobalKey key) => Scrollable.ensureVisible(
+        key.currentContext,
+        duration: const Duration(seconds: 2),
+      );
 
   Widget _buildAppBar(bool isMobile) => SliverAppBar(
         elevation: 0,
@@ -31,22 +39,22 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
             ? <Widget>[]
             : <Widget>[
                 FlatButton(
-                  onPressed: () {},
+                  onPressed: () => _scrollTo(_aboutKey),
                   textColor: Colors.white,
                   child: Text('ABOUT'),
                 ),
                 FlatButton(
-                  onPressed: () {},
+                  onPressed: () => _scrollTo(_appsKey),
                   textColor: Colors.white,
                   child: Text('APPS'),
                 ),
                 FlatButton(
-                  onPressed: () {},
+                  onPressed: () => _scrollTo(_pluginKey),
                   textColor: Colors.white,
                   child: Text('PLUGINS'),
                 ),
                 FlatButton(
-                  onPressed: () {},
+                  onPressed: () => _scrollTo(_contactKey),
                   textColor: Colors.white,
                   child: Text('CONTACT'),
                 ),
@@ -166,15 +174,14 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
 
           return Scaffold(
             body: CustomScrollView(
-              controller: _controller,
               physics: const BouncingScrollPhysics(),
               slivers: <Widget>[
                 _buildAppBar(isMobile),
-                IntroSection(),
-                AboutSection(),
-                AppsSection(),
-                PluginsSection(),
-                ContactSection(),
+                IntroSection(learnMore: () => _scrollTo(_aboutKey)),
+                AboutSection(key: _aboutKey),
+                AppsSection(key: _appsKey),
+                PluginsSection(key: _pluginKey),
+                ContactSection(key: _contactKey),
                 _buildBottomBar(isMobile),
               ],
             ),

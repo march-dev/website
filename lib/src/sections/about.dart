@@ -9,6 +9,8 @@ import '../widgets/section.dart';
 import '../helpers/theme.constants.dart';
 
 class AboutSection extends StatelessWidget {
+  const AboutSection({Key key}) : super(key: key);
+
   static const double kMaxWidth = 300;
 
   Widget _buildBulletListItem({

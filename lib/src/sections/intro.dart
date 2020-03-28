@@ -10,6 +10,13 @@ import '../helpers/theme.constants.dart';
 import '../helpers/firebase.settings.dart';
 
 class IntroSection extends StatelessWidget {
+  const IntroSection({
+    Key key,
+    @required this.learnMore,
+  }) : super(key: key);
+
+  final VoidCallback learnMore;
+
   @override
   Widget build(BuildContext context) => SliverSection(
         titleBuilder: (context, isMobile) => Column(
@@ -54,14 +61,12 @@ class IntroSection extends StatelessWidget {
             ),
             const SizedBox(height: 48),
             RaisedButton(
-              onPressed: () {
-                // TODO
-              },
+              onPressed: learnMore,
               textColor: Colors.white,
               color: kAccentColor,
               padding: const EdgeInsets.fromLTRB(48, 18, 48, 18),
               shape: RoundedRectangleBorder(
-                borderRadius: const BorderRadius.all(Radius.circular(48)),
+                borderRadius: const BorderRadius.all(Radius.circular(25)),
               ),
               child: Text(
                 'LEARN MORE',

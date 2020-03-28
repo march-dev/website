@@ -8,6 +8,8 @@ import '../scaffold.dart';
 import '../widgets/section.dart';
 
 class AppsSection extends StatelessWidget {
+  const AppsSection({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => SliverSection(
         backgroundColor: Colors.white,

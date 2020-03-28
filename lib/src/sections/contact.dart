@@ -11,6 +11,8 @@ import '../helpers/info.constants.dart';
 import '../helpers/theme.constants.dart';
 
 class ContactSection extends StatefulWidget {
+  const ContactSection({Key key}) : super(key: key);
+
   @override
   _ContactSectionState createState() => _ContactSectionState();
 }
