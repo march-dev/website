@@ -38,6 +38,8 @@ class _ContactSectionState extends State<ContactSection> {
       );
 
       await FlutterEmailSender.send(email);
+
+      // TODO: add successfully sent alert
     } catch (e, s) {
       await _showErrorAlert(e, s);
     }
@@ -48,15 +50,19 @@ class _ContactSectionState extends State<ContactSection> {
         context: context,
         builder: (context) => AlertDialog(
           content: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
                 'Unable to send email!',
-                style: TextStyle(fontSize: kBody1),
+                style: TextStyle(
+                  fontSize: kBody1,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 'Please send bug report, so we can fix it ASAP.',
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(fontStyle: FontStyle.italic),
               ),
             ],
           ),
@@ -81,7 +87,7 @@ class _ContactSectionState extends State<ContactSection> {
                   // do nothing in this case
                 }
               },
-              textColor: Colors.grey,
+              textColor: kAccentColor,
               child: Text('SEND BUG REPORT'),
             ),
           ],
