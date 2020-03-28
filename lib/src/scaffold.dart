@@ -4,17 +4,20 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:url_launcher/url_launcher.dart';
 import 'package:responsive_layout_builder/responsive_layout_builder.dart';
 
-import 'sections/apps.dart';
-import 'sections/intro.dart';
-import 'sections/about.dart';
-import 'sections/plugins.dart';
-import 'sections/contact.dart';
-import 'helpers/firebase.settings.dart';
+import 'sections/sections.dart';
+import 'helpers/theme.contants.dart';
+import 'helpers/image.constants.dart';
 
 const Color kAccentColor = Color(0xff34d1b6);
 const Color kMainThemeColor = Color(0xff2e05e9);
+
+const String _githubLink = 'https://github.com/marchdev-tk';
+const String _dartpubLink = 'https://pub.dev/publishers/marchdev.tk/packages';
+
+const String _email = 'eo.march.dev+support@gmail.com';
 
 class WebSiteScaffold extends StatefulWidget {
   @override
@@ -55,10 +58,18 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Image.network(
-              getImageAsset('logo.png'),
-              gaplessPlayback: true,
-              height: 48,
+            CircleAvatar(
+              radius: 17,
+              backgroundColor: Colors.white,
+              child: OverflowBox(
+                maxWidth: 36,
+                maxHeight: 36,
+                child: Image.asset(
+                  Images.logo,
+                  gaplessPlayback: true,
+                  height: 36,
+                ),
+              ),
             ),
             const SizedBox(width: 8),
             Column(
@@ -76,7 +87,7 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
                 Text(
                   'MARCH.DEV',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: kBody2,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
@@ -103,19 +114,17 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      // github
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => launch(_githubLink),
                         color: Colors.white,
                         hoverColor: kAccentColor.withOpacity(0.5),
-                        icon: Icon(Icons.adb),
+                        icon: ImageIcon(AssetImage(Images.github)),
                       ),
-                      // pub.dev
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => launch(_dartpubLink),
                         color: Colors.white,
                         hoverColor: kAccentColor.withOpacity(0.5),
-                        icon: Icon(Icons.adb),
+                        icon: ImageIcon(AssetImage(Images.dartpub)),
                       ),
                     ],
                   ),
@@ -125,19 +134,18 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
                       style: TextStyle(color: Colors.white),
                     ),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () => launch('mailto:$_email'),
                     textColor: Colors.white,
                     hoverColor: kAccentColor.withOpacity(0.5),
-                    child:
-                        const Text('Email Us: eo.march.dev+support@gmail.com'),
+                    child: const Text('Email Us: $_email'),
                   ),
                   if (!isMobile)
                     const Text(
                       '|',
                       style: TextStyle(color: Colors.white),
                     ),
-                  const Text(
-                    '© 2020 by MARCH.DEV',
+                  Text(
+                    '© ${DateTime.now().year} by MARCH.DEV',
                     style: TextStyle(color: Colors.white),
                   ),
                 ],

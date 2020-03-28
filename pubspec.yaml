@@ -9,6 +9,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  url_launcher: ^5.4.2
+  url_launcher_web: ^0.1.1+1
+  
   google_fonts: ^0.3.10
   cupertino_icons: ^0.1.3
   responsive_layout_builder: ^0.4.4
@@ -35,3 +38,6 @@ flutter:
     - google_fonts/JosefinSans-MediumItalic.ttf
     - google_fonts/JosefinSans-Regular.ttf
     - google_fonts/JosefinSans-SemiBold.ttf
+    - images/dart-pub-logo.png
+    - images/github-logo.png
+    - images/logo.png

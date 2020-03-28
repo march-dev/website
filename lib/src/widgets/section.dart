@@ -6,12 +6,9 @@ import 'package:flutter/material.dart';
 
 import 'package:responsive_layout_builder/responsive_layout_builder.dart';
 
-const double kTitleLarge = 48;
-const double kTitleSmall = 36;
-double getTitleSize(bool isMobile) => isMobile ? kTitleSmall : kTitleLarge;
+import '../helpers/theme.contants.dart';
 
-const double kBody1 = 16;
-const double kBody2 = 18;
+double getTitleSize(bool isMobile) => isMobile ? kTitleSmall : kTitleLarge;
 
 typedef Widget ResponsiveWidgetBuilder(BuildContext context, bool isMobile);
 

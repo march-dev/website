@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../scaffold.dart';
 import '../widgets/section.dart';
+import '../helpers/theme.contants.dart';
 
 class AboutSection extends StatelessWidget {
   static const double kMaxWidth = 300;
