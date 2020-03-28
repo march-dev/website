@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../scaffold.dart';
 import '../widgets/section.dart';
@@ -17,7 +17,7 @@ class ContactSection extends StatefulWidget {
 
 class _ContactSectionState extends State<ContactSection> {
   final _subjectController = TextEditingController();
-  final _emailController = TextEditingController();
+  final _bodyController = TextEditingController();
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -28,25 +28,17 @@ class _ContactSectionState extends State<ContactSection> {
 
     if (!_formKey.currentState.validate()) return;
 
-    try {
-      final Email email = Email(
-        body: 'My name is ${_nameController.text}, '
-            'and my subject is: ${_subjectController.text}',
-        subject: _subjectController.text,
-        recipients: [_emailController.text],
-        isHTML: false,
-      );
+    final mailTo = 'mailto:$email?subject=${_subjectController.text}&'
+        'body=${_bodyController.text}';
 
-      await FlutterEmailSender.send(email);
-
-      // TODO: add successfully sent alert
-    } catch (e, s) {
-      await _showErrorAlert(e, s);
+    if (await canLaunch(mailTo)) {
+      await launch(mailTo);
+    } else {
+      await _showErrorAlert(mailTo);
     }
   }
 
-  Future<void> _showErrorAlert(dynamic error, StackTrace stackTrace) =>
-      showDialog(
+  Future<void> _showErrorAlert(String errorString) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           content: Column(
@@ -74,17 +66,12 @@ class _ContactSectionState extends State<ContactSection> {
             ),
             FlatButton(
               onPressed: () async {
-                try {
-                  final Email _email = Email(
-                    body: 'Error:\n$error\n\nStackTrace:\n$stackTrace',
-                    subject: 'MARCH.DEV WEBSITE BUG REPORT',
-                    recipients: [email],
-                    isHTML: false,
-                  );
+                final mailTo =
+                    'mailto:$email?subject=MARCH.DEV WEBSITE BUG REPORT&'
+                    'body=Error:\n$errorString';
 
-                  await FlutterEmailSender.send(_email);
-                } catch (e) {
-                  // do nothing in this case
+                if (await canLaunch(mailTo)) {
+                  await launch(mailTo);
                 }
               },
               textColor: kAccentColor,
@@ -98,25 +85,32 @@ class _ContactSectionState extends State<ContactSection> {
     String labelText,
     TextEditingController controller,
     FormFieldValidator<String> validator,
+    bool isBody = false,
   }) =>
       Container(
-        height: 44,
+        height: isBody ? null : 44,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.all(Radius.circular(48)),
+          borderRadius: const BorderRadius.all(Radius.circular(22)),
         ),
         margin: const EdgeInsets.symmetric(vertical: 8),
         child: TextFormField(
           validator: validator,
           controller: controller,
+          minLines: isBody ? 3 : null,
+          maxLines: isBody ? 3 : null,
           decoration: InputDecoration(
             border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(48)),
+              borderRadius: const BorderRadius.all(Radius.circular(22)),
               borderSide: BorderSide.none,
             ),
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.never,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            alignLabelWithHint: true,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: isBody ? 16 : 0,
+            ),
           ),
         ),
       );
@@ -156,21 +150,20 @@ class _ContactSectionState extends State<ContactSection> {
                         ),
                         const SizedBox(width: 16),
                         Expanded(
+                          flex: 2,
                           child: _buildInput(
-                            labelText: 'Email',
-                            controller: _emailController,
+                            labelText: 'Subject',
+                            controller: _subjectController,
                             validator: (_) =>
-                                RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-                                        .hasMatch(_)
-                                    ? null
-                                    : 'It\'s not an email',
+                                _.isNotEmpty ? null : 'This field is required',
                           ),
                         ),
                       ],
                     ),
                     _buildInput(
-                      labelText: 'Subject',
-                      controller: _subjectController,
+                      labelText: 'Body',
+                      isBody: true,
+                      controller: _bodyController,
                       validator: (_) =>
                           _.isNotEmpty ? null : 'This field is required',
                     ),
@@ -185,7 +178,7 @@ class _ContactSectionState extends State<ContactSection> {
                             padding: const EdgeInsets.fromLTRB(48, 14, 48, 14),
                             shape: RoundedRectangleBorder(
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(48)),
+                                  const BorderRadius.all(Radius.circular(22)),
                             ),
                             child: Text(
                               'SEND',
