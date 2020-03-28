@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:responsive_layout_builder/responsive_layout_builder.dart';
 
-import '../helpers/theme.contants.dart';
+import '../helpers/theme.constants.dart';
 
 double getTitleSize(bool isMobile) => isMobile ? kTitleSmall : kTitleLarge;
 

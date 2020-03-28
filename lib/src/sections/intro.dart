@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../scaffold.dart';
 import '../widgets/section.dart';
-import '../helpers/theme.contants.dart';
+import '../helpers/theme.constants.dart';
 import '../helpers/firebase.settings.dart';
 
 class IntroSection extends StatelessWidget {

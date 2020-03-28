@@ -3,10 +3,12 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import '../scaffold.dart';
 import '../widgets/section.dart';
-import '../helpers/theme.contants.dart';
+import '../helpers/info.constants.dart';
+import '../helpers/theme.constants.dart';
 
 class ContactSection extends StatefulWidget {
   @override
@@ -20,6 +22,71 @@ class _ContactSectionState extends State<ContactSection> {
   final _formKey = GlobalKey<FormState>();
 
   bool _autovalidate = false;
+
+  void _sendEmail() async {
+    setState(() => _autovalidate = true);
+
+    if (!_formKey.currentState.validate()) return;
+
+    try {
+      final Email email = Email(
+        body: 'My name is ${_nameController.text}, '
+            'and my subject is: ${_subjectController.text}',
+        subject: _subjectController.text,
+        recipients: [_emailController.text],
+        isHTML: false,
+      );
+
+      await FlutterEmailSender.send(email);
+    } catch (e, s) {
+      await _showErrorAlert(e, s);
+    }
+  }
+
+  Future<void> _showErrorAlert(dynamic error, StackTrace stackTrace) =>
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Column(
+            children: <Widget>[
+              Text(
+                'Unable to send email!',
+                style: TextStyle(fontSize: kBody1),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Please send bug report, so we can fix it ASAP.',
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: Navigator.of(context).pop,
+              textColor: Colors.grey,
+              child: Text('CANCEL'),
+            ),
+            FlatButton(
+              onPressed: () async {
+                try {
+                  final Email _email = Email(
+                    body: 'Error:\n$error\n\nStackTrace:\n$stackTrace',
+                    subject: 'MARCH.DEV WEBSITE BUG REPORT',
+                    recipients: [email],
+                    isHTML: false,
+                  );
+
+                  await FlutterEmailSender.send(_email);
+                } catch (e) {
+                  // do nothing in this case
+                }
+              },
+              textColor: Colors.grey,
+              child: Text('SEND BUG REPORT'),
+            ),
+          ],
+        ),
+      );
 
   Widget _buildInput({
     String labelText,
@@ -106,13 +173,7 @@ class _ContactSectionState extends State<ContactSection> {
                       children: <Widget>[
                         Expanded(
                           child: RaisedButton(
-                            onPressed: () {
-                              setState(() => _autovalidate = true);
-
-                              if (!_formKey.currentState.validate()) return;
-
-                              // TODO: send email
-                            },
+                            onPressed: _sendEmail,
                             textColor: Colors.white,
                             color: kAccentColor,
                             padding: const EdgeInsets.fromLTRB(48, 14, 48, 14),

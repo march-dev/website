@@ -8,16 +8,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:responsive_layout_builder/responsive_layout_builder.dart';
 
 import 'sections/sections.dart';
-import 'helpers/theme.contants.dart';
+import 'helpers/info.constants.dart';
 import 'helpers/image.constants.dart';
+import 'helpers/theme.constants.dart';
 
 const Color kAccentColor = Color(0xff34d1b6);
 const Color kMainThemeColor = Color(0xff2e05e9);
-
-const String _githubLink = 'https://github.com/marchdev-tk';
-const String _dartpubLink = 'https://pub.dev/publishers/marchdev.tk/packages';
-
-const String _email = 'eo.march.dev+support@gmail.com';
 
 class WebSiteScaffold extends StatefulWidget {
   @override
@@ -58,16 +54,19 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            CircleAvatar(
-              radius: 17,
-              backgroundColor: Colors.white,
-              child: OverflowBox(
-                maxWidth: 36,
-                maxHeight: 36,
-                child: Image.asset(
-                  Images.logo,
-                  gaplessPlayback: true,
-                  height: 36,
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(17)),
+              child: CircleAvatar(
+                radius: 17,
+                backgroundColor: Colors.white,
+                child: OverflowBox(
+                  maxWidth: 36,
+                  maxHeight: 36,
+                  child: Image.asset(
+                    Images.logo,
+                    gaplessPlayback: true,
+                    height: 36,
+                  ),
                 ),
               ),
             ),
@@ -102,7 +101,10 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
         child: Ink(
           color: Colors.black,
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+              horizontal: 8,
+            ),
             child: Center(
               child: Wrap(
                 spacing: 16,
@@ -115,13 +117,13 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       IconButton(
-                        onPressed: () => launch(_githubLink),
+                        onPressed: () => launch(githubLink),
                         color: Colors.white,
                         hoverColor: kAccentColor.withOpacity(0.5),
                         icon: ImageIcon(AssetImage(Images.github)),
                       ),
                       IconButton(
-                        onPressed: () => launch(_dartpubLink),
+                        onPressed: () => launch(dartpubLink),
                         color: Colors.white,
                         hoverColor: kAccentColor.withOpacity(0.5),
                         icon: ImageIcon(AssetImage(Images.dartpub)),
@@ -134,10 +136,10 @@ class _WebSiteScaffoldState extends State<WebSiteScaffold> {
                       style: TextStyle(color: Colors.white),
                     ),
                   FlatButton(
-                    onPressed: () => launch('mailto:$_email'),
+                    onPressed: () => launch('mailto:$email'),
                     textColor: Colors.white,
                     hoverColor: kAccentColor.withOpacity(0.5),
-                    child: const Text('Email Us: $_email'),
+                    child: const Text('Email Us: $email'),
                   ),
                   if (!isMobile)
                     const Text(
