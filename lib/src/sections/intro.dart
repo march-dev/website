@@ -19,6 +19,7 @@ class IntroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SliverSection(
+        backgroundColor: kMainThemeColor,
         titleBuilder: (context, isMobile) => Column(
           children: <Widget>[
             Image.network(

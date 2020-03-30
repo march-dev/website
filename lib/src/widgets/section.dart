@@ -17,12 +17,19 @@ class Section extends StatelessWidget {
     Key key,
     @required this.titleBuilder,
     @required this.builder,
+    this.fixedSize = false,
     this.backgroundColor,
-  }) : super(key: key);
+    this.padding,
+  })  : assert(titleBuilder != null),
+        assert(builder != null),
+        assert(fixedSize != null),
+        super(key: key);
 
   final ResponsiveWidgetBuilder titleBuilder;
   final ResponsiveWidgetBuilder builder;
+  final EdgeInsetsGeometry padding;
   final Color backgroundColor;
+  final bool fixedSize;
 
   static Widget titleWith({
     @required String text,
@@ -48,8 +55,14 @@ class Section extends StatelessWidget {
 
           return Container(
             color: backgroundColor,
+            constraints: fixedSize
+                ? null
+                : BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height,
+                  ),
+            height: fixedSize ? MediaQuery.of(context).size.height : null,
             child: Padding(
-              padding: const EdgeInsets.all(32),
+              padding: padding ?? const EdgeInsets.all(32),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
@@ -69,12 +82,19 @@ class SliverSection extends StatelessWidget {
     Key key,
     @required this.titleBuilder,
     @required this.builder,
+    this.fixedSize = false,
     this.backgroundColor,
-  }) : super(key: key);
+    this.padding,
+  })  : assert(titleBuilder != null),
+        assert(builder != null),
+        assert(fixedSize != null),
+        super(key: key);
 
   final ResponsiveWidgetBuilder titleBuilder;
   final ResponsiveWidgetBuilder builder;
+  final EdgeInsetsGeometry padding;
   final Color backgroundColor;
+  final bool fixedSize;
 
   static Widget titleWith({
     @required String text,
@@ -89,6 +109,7 @@ class SliverSection extends StatelessWidget {
           titleBuilder: (context, isMobile) => titleBuilder(context, isMobile),
           builder: (context, isMobile) => builder(context, isMobile),
           backgroundColor: backgroundColor,
+          padding: padding,
         ),
       );
 }

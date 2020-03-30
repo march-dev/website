@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../scaffold.dart';
 import '../widgets/section.dart';
 import '../helpers/info.constants.dart';
+import '../helpers/image.constants.dart';
 import '../helpers/theme.constants.dart';
 
 class ContactSection extends StatefulWidget {
@@ -117,85 +118,183 @@ class _ContactSectionState extends State<ContactSection> {
         ),
       );
 
-  @override
-  Widget build(BuildContext context) => SliverSection(
-        titleBuilder: (context, isMobile) => SliverSection.titleWith(
-          text: 'BE IN',
-          isMobile: isMobile,
-        ),
-        builder: (context, isMobile) => Column(
-          children: <Widget>[
-            SliverSection.titleWith(
-              text: 'TOUCH',
-              isMobile: isMobile,
-              color: kAccentColor,
-            ),
-            const SizedBox(height: 48),
-            Form(
-              autovalidate: _autovalidate,
-              key: _formKey,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 400,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: _buildInput(
-                            labelText: 'Name',
-                            controller: _nameController,
-                            validator: (_) =>
-                                _.length >= 2 ? null : 'This field is required',
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          flex: 2,
-                          child: _buildInput(
-                            labelText: 'Subject',
-                            controller: _subjectController,
-                            validator: (_) =>
-                                _.isNotEmpty ? null : 'This field is required',
-                          ),
-                        ),
-                      ],
+  Widget _buildForm() => Form(
+        autovalidate: _autovalidate,
+        key: _formKey,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 400,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: _buildInput(
+                      labelText: 'Name',
+                      controller: _nameController,
+                      validator: (_) =>
+                          _.length >= 2 ? null : 'This field is required',
                     ),
-                    _buildInput(
-                      labelText: 'Body',
-                      isBody: true,
-                      controller: _bodyController,
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    flex: 3,
+                    child: _buildInput(
+                      labelText: 'Subject',
+                      controller: _subjectController,
                       validator: (_) =>
                           _.isNotEmpty ? null : 'This field is required',
                     ),
-                    const SizedBox(height: 4),
+                  ),
+                ],
+              ),
+              _buildInput(
+                labelText: 'Body',
+                isBody: true,
+                controller: _bodyController,
+                validator: (_) =>
+                    _.isNotEmpty ? null : 'This field is required',
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: _sendEmail,
+                      textColor: Colors.white,
+                      color: kAccentColor,
+                      padding: const EdgeInsets.fromLTRB(48, 14, 48, 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(22)),
+                      ),
+                      child: Text(
+                        'SEND',
+                        style: TextStyle(fontSize: kBody1),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Widget _buildFooter(bool isMobile) => Container(
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 8,
+          ),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Wrap(
+                  spacing: 16,
+                  runSpacing: 16,
+                  alignment: WrapAlignment.center,
+                  runAlignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Expanded(
-                          child: RaisedButton(
-                            onPressed: _sendEmail,
-                            textColor: Colors.white,
-                            color: kAccentColor,
-                            padding: const EdgeInsets.fromLTRB(48, 14, 48, 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(22)),
-                            ),
-                            child: Text(
-                              'SEND',
-                              style: TextStyle(fontSize: kBody1),
-                            ),
-                          ),
+                        IconButton(
+                          onPressed: () => launch(githubLink),
+                          color: Colors.white,
+                          hoverColor: kAccentColor.withOpacity(0.5),
+                          icon: ImageIcon(AssetImage(Images.github)),
+                        ),
+                        IconButton(
+                          onPressed: () => launch(dartpubLink),
+                          color: Colors.white,
+                          hoverColor: kAccentColor.withOpacity(0.5),
+                          icon: ImageIcon(AssetImage(Images.dartpub)),
                         ),
                       ],
+                    ),
+                    if (!isMobile)
+                      const Text(
+                        '|',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    FlatButton(
+                      onPressed: () => launch('mailto:$email'),
+                      textColor: Colors.white,
+                      hoverColor: kAccentColor.withOpacity(0.5),
+                      child: const Text(
+                        'Email Us: $email',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    if (!isMobile)
+                      const Text(
+                        '|',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    Text(
+                      '© ${DateTime.now().year} by MARCH.DEV',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 100),
-          ],
+            ],
+          ),
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) => SliverSection(
+        backgroundColor: kMainThemeColor,
+        padding: const EdgeInsets.only(top: 16),
+        titleBuilder: (context, isMobile) => Container(),
+        builder: (context, isMobile) => Container(
+          height: MediaQuery.of(context).size.height - 32,
+          child: Column(
+            children: <Widget>[
+              SliverSection.titleWith(
+                text: 'BE IN',
+                isMobile: isMobile,
+              ),
+              const SizedBox(height: 16),
+              SliverSection.titleWith(
+                text: 'TOUCH',
+                isMobile: isMobile,
+                color: kAccentColor,
+              ),
+              if (!isMobile)
+                const SizedBox(height: 48)
+              else
+                const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: _buildForm(),
+              ),
+              const Spacer(),
+              _buildFooter(isMobile),
+              SizedOverflowBox(
+                size: Size(double.infinity, 0.1),
+                child: Container(
+                  height: 4,
+                  color: Colors.black,
+                ),
+              ),
+              SizedOverflowBox(
+                size: Size(double.infinity, 0.1),
+                alignment: Alignment.topCenter,
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }

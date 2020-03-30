@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'march.dev',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        backgroundColor: kMainThemeColor,
-        canvasColor: kMainThemeColor,
+        backgroundColor: Colors.white,
+        canvasColor: Colors.white,
         textTheme: GoogleFonts.josefinSansTextTheme(),
       ),
       home: WebSiteScaffold(),
