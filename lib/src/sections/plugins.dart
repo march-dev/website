@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../scaffold.dart';
 import '../widgets/section.dart';
 
 class PluginsSection extends StatelessWidget {
