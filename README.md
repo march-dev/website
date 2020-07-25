@@ -2,6 +2,20 @@
 
 march.dev web site.
 
+## How To Upload New Version
+
+1. Install, if needed, firebase CLI tools via:
+    
+    `npm install -g firebase-tools`
+
+2. Login, if needed, via:
+
+    `firebase login`
+
+3. To deploy use folowing command:
+
+    `firebase deploy [-m "Optional message"]`
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
